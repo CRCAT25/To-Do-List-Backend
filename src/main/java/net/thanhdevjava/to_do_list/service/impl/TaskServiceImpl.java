@@ -9,6 +9,7 @@ import net.thanhdevjava.to_do_list.service.TaskService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -33,6 +34,13 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .map(TaskMapper::toDTO)
                 .toList();
+    }
+
+    @Override
+    public TaskDTO getTaskById(Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+
+        return task.map(TaskMapper::toDTO).orElse(null);
     }
 
     @Override
