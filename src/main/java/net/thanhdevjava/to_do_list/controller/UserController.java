@@ -88,6 +88,8 @@ public class UserController {
                         .body(ResponseDTO.error("User not found", "USER_NOT_FOUND"));
             }
 
+            userService.deleteUserById(id);
+
             return ResponseEntity.ok(ResponseDTO.success("Deleted successfully", null));
         }
         catch (Exception ex) {

@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.thanhdevjava.to_do_list.enums.TaskStatus;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,11 +22,12 @@ public class Task {
 
     private String title;
 
-    private Long status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
     private String statusName;
 
-    private Date deadline;
+    private LocalDateTime deadline;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

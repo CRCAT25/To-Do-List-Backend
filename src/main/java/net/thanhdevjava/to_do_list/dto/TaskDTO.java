@@ -3,8 +3,9 @@ package net.thanhdevjava.to_do_list.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.thanhdevjava.to_do_list.enums.TaskStatus;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ public class TaskDTO {
     private String title;
     private Long userId;
     private String username;
-    private Long status;
+    private TaskStatus status;
     private String statusName;
-    private Date deadline;
+    private LocalDateTime deadline;
 }

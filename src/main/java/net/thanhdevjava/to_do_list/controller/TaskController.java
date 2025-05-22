@@ -88,13 +88,22 @@ public class TaskController {
     // Delete task
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> deleteTask(@PathVariable Long id) {
-        TaskDTO task = taskService.getTaskById(id);
-        if( task == null){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(ResponseDTO.error("Task not found", "TASK_NOT_FOUND"));
-        }
+        try{
+            TaskDTO task = taskService.getTaskById(id);
+            if( task == null){
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(ResponseDTO.error("Task not found", "TASK_NOT_FOUND"));
+            }
 
-        return ResponseEntity.ok(ResponseDTO.success("Deleted successfully", null));
+            taskService.deleteTask(id);
+
+            return ResponseEntity.ok(ResponseDTO.success("Deleted successfully", null));
+        }
+        catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseDTO.error("Internal server error", "INTERNAL_ERROR"));
+        }
     }
 }

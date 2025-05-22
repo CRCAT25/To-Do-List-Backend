@@ -34,7 +34,6 @@ public class User {
 
     private String role = "USER";
 
-    public User orElseThrow(Object userNotFound) {
-        return (User) userNotFound;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 }
