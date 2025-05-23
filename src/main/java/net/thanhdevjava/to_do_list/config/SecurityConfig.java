@@ -35,12 +35,12 @@ public class SecurityConfig {
 
     /**
      * CORS configuration to allow requests from the frontend.
-     * You should replace "http://localhost:3000" with the actual domain of your frontend.
+     * You should replace "http://localhost:5173" with the actual domain of your frontend.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
