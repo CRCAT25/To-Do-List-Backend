@@ -2,8 +2,11 @@ package net.thanhdevjava.to_do_list.controller;
 
 import net.thanhdevjava.to_do_list.dto.ResponseDTO;
 import net.thanhdevjava.to_do_list.dto.TaskDTO;
+import net.thanhdevjava.to_do_list.dto.UserDTO;
 import net.thanhdevjava.to_do_list.entity.User;
+import net.thanhdevjava.to_do_list.mapper.UserMapper;
 import net.thanhdevjava.to_do_list.service.TaskService;
+import net.thanhdevjava.to_do_list.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +19,11 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final UserService userService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     // READ (Get all tasks)
@@ -51,12 +56,15 @@ public class TaskController {
 
     // Create task
     @PostMapping
-    public ResponseEntity<ResponseDTO<TaskDTO>> createTask(@RequestBody TaskDTO taskDTO, User user) {
+    public ResponseEntity<ResponseDTO<TaskDTO>> createTask(@RequestBody TaskDTO taskDTO) {
+        UserDTO userDTO = userService.getUserById(taskDTO.getUserId());
+        User user = UserMapper.toEntity(userDTO);
         try{
             return ResponseEntity
                     .ok(ResponseDTO.success("Created successfully", taskService.createTask(taskDTO, user)));
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResponseDTO.error("Internal server error", "INTERNAL_ERROR"));

@@ -25,8 +25,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    private String statusName;
-
     private LocalDateTime deadline;
 
     @ManyToOne

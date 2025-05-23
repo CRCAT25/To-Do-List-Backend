@@ -12,7 +12,6 @@ public class TaskMapper {
         dto.setUserId(task.getUser().getId());
         dto.setUsername(task.getUser().getUsername()); // if needed
         dto.setStatus(task.getStatus());
-        dto.setStatusName(task.getStatusName());
         dto.setDeadline(task.getDeadline());
         return dto;
     }
@@ -23,7 +22,6 @@ public class TaskMapper {
         task.setTitle(dto.getTitle());
         task.setUser(user); // You must find the User entity by ID beforehand
         task.setStatus(dto.getStatus());
-        task.setStatusName(dto.getStatusName());
         task.setDeadline(dto.getDeadline());
         return task;
     }
