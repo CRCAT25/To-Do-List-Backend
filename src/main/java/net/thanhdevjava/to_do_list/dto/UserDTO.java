@@ -16,4 +16,5 @@ public class UserDTO {
     private String email;
     private String role;
     private List<TaskDTO> tasks;
+    private String status;
 }

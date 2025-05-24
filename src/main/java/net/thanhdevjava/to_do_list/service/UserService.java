@@ -1,6 +1,5 @@
 package net.thanhdevjava.to_do_list.service;
 
-import net.thanhdevjava.to_do_list.dto.ResponseDTO;
 import net.thanhdevjava.to_do_list.dto.UserDTO;
 import net.thanhdevjava.to_do_list.entity.User;
 

@@ -1,6 +1,7 @@
 package net.thanhdevjava.to_do_list.security.custom;
 
 import net.thanhdevjava.to_do_list.repository.UserRepository;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,12 +23,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),               // Username from database
-                        user.getPassword(),               // Encrypted password from database
-                        List.of(new SimpleGrantedAuthority(user.getRole())) // Convert user's role to Spring Security authority
-                ))
-                // If user not found in database, throw exception
+                .map(user -> {
+                    if (!"active".equalsIgnoreCase(user.getStatus())) {
+                        throw new DisabledException("User account has not been activated.");
+                    }
+
+                    return new org.springframework.security.core.userdetails.User(
+                            user.getUsername(),
+                            user.getPassword(),
+                            List.of(new SimpleGrantedAuthority(user.getRole()))
+                    );
+                })
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

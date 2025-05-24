@@ -5,29 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.thanhdevjava.to_do_list.enums.TaskStatus;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tasks")
-public class Task {
+@Entity
+@Table(name = "verification_tokens")
+public class VerificationToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String token;
 
-    @Enumerated(EnumType.STRING)
-    private TaskStatus status;
-
-    private LocalDateTime deadline;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne
     private User user;
+
+    private LocalDateTime expiryDate;
+
 }

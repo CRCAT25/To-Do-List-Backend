@@ -8,6 +8,7 @@ import net.thanhdevjava.to_do_list.dto.SignupRequest;
 import net.thanhdevjava.to_do_list.entity.User;
 import net.thanhdevjava.to_do_list.security.jwt.JwtUtils;
 import net.thanhdevjava.to_do_list.service.UserService;
+import net.thanhdevjava.to_do_list.service.VerifyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;  // Utility class to handle JWT creation and validation
     private final UserService userService;  // Service for user-related operations (e.g., save user, check if username exists)
     private final PasswordEncoder passwordEncoder;  // Password encoder for hashing passwords
+    private final VerifyService verifyService;
 
     // Endpoint for user registration (sign-up)
     @PostMapping("/register")
@@ -47,6 +49,7 @@ public class AuthController {
         user.setPassword(encodedPassword);  // Store the hashed password
         user.setEmail(signupRequest.getEmail());
         user.setRole("ROLE_USER");  // Default role assigned to the user
+        user.setStatus("waiting"); // Waiting for email authentication
 
         // Save the user to the database
         userService.save(user);
@@ -70,4 +73,15 @@ public class AuthController {
         // Return the JWT token wrapped in an AuthResponse object
         return ResponseEntity.ok(new AuthResponse(token));
     }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+        boolean verified = verifyService.verifyToken(token);
+        if (verified) {
+            return ResponseEntity.ok("Xác thực thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("Token không hợp lệ hoặc đã hết hạn.");
+        }
+    }
+
 }
