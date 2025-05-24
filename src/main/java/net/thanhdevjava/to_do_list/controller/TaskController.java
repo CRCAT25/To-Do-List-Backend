@@ -73,7 +73,10 @@ public class TaskController {
 
     // Update task
     @PutMapping
-    public ResponseEntity<ResponseDTO<TaskDTO>> updateTask(@RequestBody TaskDTO taskDTO, User user) {
+    public ResponseEntity<ResponseDTO<TaskDTO>> updateTask(@RequestBody TaskDTO taskDTO) {
+        UserDTO userDTO = userService.getUserById(taskDTO.getUserId());
+        User user = UserMapper.toEntity(userDTO);
+
         try{
             TaskDTO task = taskService.getTaskById(taskDTO.getId());
 

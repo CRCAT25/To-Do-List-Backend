@@ -16,6 +16,5 @@ public class TaskDTO {
     private Long userId;
     private String username;
     private TaskStatus status;
-    private String statusName;
     private LocalDateTime deadline;
 }
