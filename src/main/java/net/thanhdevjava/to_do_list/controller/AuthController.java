@@ -3,10 +3,12 @@ package net.thanhdevjava.to_do_list.controller;
 import lombok.RequiredArgsConstructor;
 import net.thanhdevjava.to_do_list.dto.AuthRequest;
 import net.thanhdevjava.to_do_list.dto.AuthResponse;
+import net.thanhdevjava.to_do_list.dto.ResponseDTO;
 import net.thanhdevjava.to_do_list.dto.SignupRequest;
 import net.thanhdevjava.to_do_list.entity.User;
 import net.thanhdevjava.to_do_list.security.jwt.JwtUtils;
 import net.thanhdevjava.to_do_list.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,14 +30,13 @@ public class AuthController {
 
     // Endpoint for user registration (sign-up)
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<ResponseDTO<String>> register(@RequestBody SignupRequest signupRequest) {
         // Check if the username already exists
         if (userService.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Username already exists!");  // Respond with error if username is taken
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ResponseDTO.error("The username already exists", "BAD_REQUEST"));
         }
-
-        // Print signup request for debugging
-        System.out.println("Signup request: " + signupRequest);
 
         // Hash the password before saving it in the database
         String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
@@ -47,14 +48,11 @@ public class AuthController {
         user.setEmail(signupRequest.getEmail());
         user.setRole("ROLE_USER");  // Default role assigned to the user
 
-        // Print the user object for debugging
-        System.out.println("User: " + encodedPassword);
-
         // Save the user to the database
         userService.save(user);
 
         // Return a success message
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(ResponseDTO.success("User registered successfully", null));
     }
 
     // Endpoint for user login (authentication) and JWT generation
