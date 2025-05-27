@@ -13,6 +13,7 @@ public class TaskMapper {
         dto.setUsername(task.getUser().getUsername()); // if needed
         dto.setStatus(task.getStatus());
         dto.setDeadline(task.getDeadline());
+        dto.setFullName(task.getUser().getFullName());
         return dto;
     }
 
